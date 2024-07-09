@@ -1,0 +1,129 @@
+provider "aws" {
+  region = "us-west-2"
+}
+
+# VPC
+resource "aws_vpc" "main" {
+  cidr_block = "10.0.0.0/16"
+}
+
+# Subnet
+resource "aws_subnet" "main" {
+  vpc_id     = aws_vpc.main.id
+  cidr_block = "10.0.1.0/24"
+}
+
+# Security Group for ALB
+resource "aws_security_group" "alb_sg" {
+  vpc_id = aws_vpc.main.id
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+# Security Group for EC2 instances
+resource "aws_security_group" "web_sg" {
+  vpc_id = aws_vpc.main.id
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+# Route 53 Hosted Zone
+resource "aws_route53_zone" "main" {
+  name = "example.com"
+}
+
+# Route 53 Record pointing to ALB
+resource "aws_route53_record" "www" {
+  zone_id = aws_route53_zone.main.zone_id
+  name    = "www"
+  type    = "A"
+  alias {
+    name                   = aws_lb.alb.dns_name
+    zone_id                = aws_lb.alb.zone_id
+    evaluate_target_health = true
+  }
+}
+
+# ALB
+resource "aws_lb" "alb" {
+  name               = "my-alb"
+  internal           = false
+  load_balancer_type = "application"
+  security_groups    = [aws_security_group.alb_sg.id]
+  subnets            = [aws_subnet.main.id]
+}
+
+# ALB Target Group
+resource "aws_lb_target_group" "web_tg" {
+  name     = "web-tg"
+  port     = 80
+  protocol = "HTTP"
+  vpc_id   = aws_vpc.main.id
+}
+
+# ALB Listener
+resource "aws_lb_listener" "web_listener" {
+  load_balancer_arn = aws_lb.alb.arn
+  port              = "80"
+  protocol          = "HTTP"
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.web_tg.arn
+  }
+}
+
+# Launch Configuration for Auto Scaling Group
+resource "aws_launch_configuration" "web_config" {
+  name          = "web-launch-configuration"
+  image_id      = "ami-0c55b159cbfafe1f0" # Amazon Linux 2 AMI
+  instance_type = "t2.micro"
+  security_groups = [aws_security_group.web_sg.id]
+
+  user_data = <<-EOF
+              #!/bin/bash
+              yum install -y httpd
+              systemctl start httpd
+              systemctl enable httpd
+              EOF
+}
+
+# Auto Scaling Group
+resource "aws_autoscaling_group" "web_asg" {
+  launch_configuration = aws_launch_configuration.web_config.id
+  min_size             = 2
+  max_size             = 10
+  desired_capacity     = 2
+  vpc_zone_identifier  = [aws_subnet.main.id]
+  target_group_arns    = [aws_lb_target_group.web_tg.arn]
+
+  tag {
+    key                 = "Name"
+    value               = "web-server"
+    propagate_at_launch = true
+  }
+}
