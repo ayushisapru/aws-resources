@@ -1,52 +1,22 @@
-# Aws: 
 provider "aws" {
-  region = "us-west-2"
+  region = var.region
 }
 
+module "my_alb" {
+  source = "../alb-module"  # path to registry source
 
-Route 53:
-resource "aws_route53_zone" "example" {
-  name = "example.com"
+  name                     = var.alb_name
+  internal                 = var.alb_internal
+  security_groups          = var.security_groups
+  subnets                  = var.subnets
+  enable_deletion_protection = var.enable_deletion_protection
+  tags                     = var.tags
 }
 
-# Alb:
-
-resource "aws_lb" "example" {
-  name               = "example-lb"
-  internal           = false
-  load_balancer_type = "application"
-  security_groups    = [aws_security_group.lb_sg.id]
-  subnets            = [aws_subnet.example1.id, aws_subnet.example2.id]
+output "alb_arn" {
+  value = module.my_alb.alb_arn
 }
 
-# Asg:
-
-resource "aws_autoscaling_group" "example" {
-  desired_capacity     = 2
-  max_size             = 3
-  min_size             = 1
-  vpc_zone_identifier  = [aws_subnet.example1.id, aws_subnet.example2.id]
-  launch_configuration = aws_launch_configuration.example.id
+output "alb_dns_name" {
+  value = module.my_alb.alb_dns_name
 }
-
-
-# Rds: 
-
-resource "aws_db_instance" "example" {
-  allocated_storage    = var.db_allocated_storage
-  engine               = var.db_engine
-  instance_class       = var.db_instance_class
-  name                 = var.db_name
-  username             = var.db_user
-  password             = var.db_password
-  parameter_group_name = "default.mysql5.7"
-  skip_final_snapshot  = true
-
-  # VPC security group and subnet group (optional)
-  # vpc_security_group_ids = ["sg-12345678"]
-  # subnet_group_name = "my_subnet_group"
-}
-
-
-}
-
