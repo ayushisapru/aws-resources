@@ -8,8 +8,8 @@ module "my_alb" {
 
   name                     = var.alb_name
   internal                 = var.alb_internal
-  security_groups          = var.security_groups
-  subnets                  = var.subnets
+  vpc_security_group_ids = [aws_security_group.sg.id]
+  subnet_id = aws_subnet.subnet.id
   enable_deletion_protection = var.enable_deletion_protection
   tags                     = var.tags
 }
