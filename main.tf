@@ -3,7 +3,8 @@ provider "aws" {
 }
 
 module "my_alb" {
-  source = "../alb-module"  # path to registry source
+  source  = "terraform-aws-modules/alb/aws"
+  version = "9.9.0"
 
   name                     = var.alb_name
   internal                 = var.alb_internal
