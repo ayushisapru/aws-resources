@@ -15,7 +15,7 @@ variable "alb_internal" {
   type        = bool
   default     = false
 }
-
+/*
 variable "security_groups" {
   description = "A list of security group IDs to assign to the load balancer"
   type        = list(string)
@@ -27,7 +27,7 @@ variable "subnets" {
   type        = list(string)
   default     = aws_subnet.subnet.id
 }
-
+*/
 variable "enable_deletion_protection" {
   description = "Whether deletion protection is enabled"
   type        = bool
