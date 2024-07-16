@@ -2,7 +2,7 @@ provider "aws" {
   region = var.region
 }
 
-module "my_alb" {
+module "alb" {
   source  = "terraform-aws-modules/alb/aws"
   version = "9.9.0"
 
