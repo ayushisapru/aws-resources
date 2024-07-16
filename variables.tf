@@ -1,7 +1,7 @@
 variable "region" {
   description = "The AWS region to deploy the ALB"
   type        = string
-  default     = "us-east-1"  
+  default     = "us-east-2"  
 }
 
 variable "alb_name" {
