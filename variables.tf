@@ -19,13 +19,13 @@ variable "alb_internal" {
 variable "security_groups" {
   description = "A list of security group IDs to assign to the load balancer"
   type        = list(string)
-  default     = // somehow need to reference sofia's sg id
+  default     = [aws_security_group.sg.id]
 }
 
 variable "subnets" {
   description = "A list of subnet IDs to attach to the load balancer"
   type        = list(string)
-  default     = // same as above
+  default     = aws_subnet.subnet.id
 }
 
 variable "enable_deletion_protection" {
