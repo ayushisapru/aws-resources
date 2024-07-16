@@ -1,9 +1,14 @@
-# for database
-
-output "db_endpoint" {
-  value = aws_db_instance.example.endpoint
+output "alb_arn" {
+  description = "The ARN of the ALB"
+  value       = aws_lb.this.arn
 }
 
-output "db_name" {
-  value = aws_db_instance.example.name
+output "alb_dns_name" {
+  description = "The DNS name of the ALB"
+  value       = aws_lb.this.dns_name
+}
+
+output "alb_zone_id" {
+  description = "The zone_id of the ALB"
+  value       = aws_lb.this.zone_id
 }
