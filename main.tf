@@ -9,7 +9,7 @@ module "alb" {
   name                     = var.alb_name
   internal                 = var.alb_internal
   security_groups          = [aws_security_group.sg.id]
-  subnets                  = var.subnets  
+  subnets                  = aws_subnet.subnet.id
   enable_deletion_protection = var.enable_deletion_protection
   tags                     = var.tags
 }
