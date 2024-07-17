@@ -14,15 +14,26 @@ variable "alb_internal" {
   default     = false
 }
 
-variable "security_group_id" {
-  description = "The ID of the security group to assign to the load balancer"
-  type        = string
-  default     = "sg-0d56d6beb4c1bc48f"
+variable "security_groups" {
+  description = "A list of security group IDs to assign to the load balancer"
+  type        = list(string)
+  default     = ["sg-0d56d6beb4c1bc48f"]
 }
 
 variable "subnets" {
-  description = "The ID of the subnet to attach to the load balancer"
-  type        = string
-  default     = "subnet-062078177a35b5fbb"
+  description = "The IDs of the subnets to attach to the load balancer"
+  type        = list(string)
+  default     = ["subnet-062078177a35b5fbb"]
 }
 
+variable "enable_deletion_protection" {
+  description = "Whether deletion protection is enabled"
+  type        = bool
+  default     = false
+}
+
+variable "tags" {
+  description = "Tags to be applied to resources"
+  type        = map(string)
+  default     = {}
+}
