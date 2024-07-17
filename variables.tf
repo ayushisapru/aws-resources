@@ -1,55 +1,53 @@
 variable "region" {
-  description = "The AWS region to deploy the ALB"
+  description = "The AWS region to create resources in."
   type        = string
-  default     = "us-east-2"  
+  default     = "us-west-2"
 }
 
 variable "alb_name" {
-  description = "The name of the Application Load Balancer"
+  description = "The name of the ALB."
   type        = string
-  default     = "my-alb"
 }
 
 variable "alb_internal" {
-  description = "Whether the load balancer is internal or external"
+  description = "Whether the ALB is internal."
   type        = bool
   default     = false
 }
-/*
-variable "security_groups" {
-  description = "A list of security group IDs to assign to the load balancer"
-  type        = list(string)
-  default     = [aws_security_group.sg.id]
+
+variable "vpc_id" {
+  description = "The VPC ID where resources will be created."
+  type        = string
 }
 
-variable "subnets" {
-  description = "A list of subnet IDs to attach to the load balancer"
-  type        = list(string)
-  default     = aws_subnet.subnet.id
-}
-*/
-
-variable "security_groups" {
-  description = "A list of security group IDs to assign to the load balancer"
+variable "subnet_ids" {
+  description = "List of subnet IDs."
   type        = list(string)
 }
 
-variable "subnets" {
-  description = "A list of subnet IDs to attach to the load balancer"
+variable "subnet_cidrs" {
+  description = "List of subnet CIDR blocks."
   type        = list(string)
 }
 
 variable "enable_deletion_protection" {
-  description = "Whether deletion protection is enabled"
+  description = "Whether to enable deletion protection for the ALB."
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "tags" {
-  description = "A map of tags to assign to the resource"
+  description = "Tags to be applied to resources."
   type        = map(string)
-  default = {
-    Environment = "dev"
-    Project     = "my-project"
-  }
+  default     = {}
+}
+
+variable "security_groups" {
+  description = "A list of security group IDs to assign to the load balancer"
+  type        = list(string)
+}
+
+variable "subnets" {
+  description = "A list of subnet IDs to attach to the load balancer"
+  type        = list(string)
 }
