@@ -26,7 +26,3 @@ variable "subnets" {
   default     = "subnet-062078177a35b5fbb"
 }
 
-variable "enable_deletion_protection" {
-  description = "Whether deletion protection is enabled"
-  type        = bool
-}
