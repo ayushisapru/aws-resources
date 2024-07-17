@@ -15,14 +15,10 @@ variable "alb_internal" {
   default     = false
 }
 
-variable "vpc_id" {
-  description = "The VPC ID where resources will be created."
+variable "vpc_cidr" {
+  description = "The CIDR block for the VPC."
   type        = string
-}
-
-variable "subnet_ids" {
-  description = "List of subnet IDs."
-  type        = list(string)
+  default     = "10.0.0.0/16"
 }
 
 variable "subnet_cidrs" {
@@ -40,14 +36,4 @@ variable "tags" {
   description = "Tags to be applied to resources."
   type        = map(string)
   default     = {}
-}
-
-variable "security_groups" {
-  description = "A list of security group IDs to assign to the load balancer"
-  type        = list(string)
-}
-
-variable "subnets" {
-  description = "A list of subnet IDs to attach to the load balancer"
-  type        = list(string)
 }
