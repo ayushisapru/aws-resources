@@ -8,8 +8,8 @@ module "alb" {
 
   name                     = var.alb_name
   internal                 = var.alb_internal
-  security_groups          = [aws_security_group.security_group_id.id]
-  subnets                  = aws_subnet.subnets
+  security_groups          = var.security_groups
+  subnets                  = var.subnets
   tags                     = var.tags
 }
 
@@ -19,4 +19,8 @@ output "alb_arn" {
 
 output "alb_dns_name" {
   value = module.alb.alb_dns_name
+}
+
+output "alb_zone_id" {
+  value = module.alb.alb_zone_id
 }
