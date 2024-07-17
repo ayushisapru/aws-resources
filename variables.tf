@@ -28,6 +28,17 @@ variable "subnets" {
   default     = aws_subnet.subnet.id
 }
 */
+
+variable "security_groups" {
+  description = "A list of security group IDs to assign to the load balancer"
+  type        = list(string)
+}
+
+variable "subnets" {
+  description = "A list of subnet IDs to attach to the load balancer"
+  type        = list(string)
+}
+
 variable "enable_deletion_protection" {
   description = "Whether deletion protection is enabled"
   type        = bool
