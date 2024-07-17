@@ -29,3 +29,4 @@ variable "subnets" {
 variable "enable_deletion_protection" {
   description = "Whether deletion protection is enabled"
   type        = bool
+}
