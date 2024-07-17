@@ -14,26 +14,29 @@ variable "alb_internal" {
   default     = false
 }
 
+/*
 variable "security_groups" {
   description = "A list of security group IDs to assign to the load balancer"
   type        = list(string)
-  default     = ["sg-0d56d6beb4c1bc48f"]
+  default     = [aws_security_group.sg.id]
 }
-
 variable "subnets" {
-  description = "The IDs of the subnets to attach to the load balancer"
+  description = "A list of subnet IDs to attach to the load balancer"
   type        = list(string)
-  default     = ["subnet-062078177a35b5fbb"]
+  default     = aws_subnet.subnet.id
 }
 
+*/
 variable "enable_deletion_protection" {
   description = "Whether deletion protection is enabled"
   type        = bool
-  default     = false
+  default     = true
 }
-
 variable "tags" {
-  description = "Tags to be applied to resources"
+  description = "A map of tags to assign to the resource"
   type        = map(string)
-  default     = {}
+  default = {
+    Environment = "dev"
+    Project     = "my-project"
+  }
 }
