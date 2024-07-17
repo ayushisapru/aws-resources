@@ -4,36 +4,50 @@ variable "region" {
   default     = "us-west-2"
 }
 
-variable "instance_type" {
-  description = "The instance type for the EC2 instance."
-  type        = string
-  default     = "t2.micro"
-}
-
-variable "hcp_bucket_ubuntu" {
-  description = "The HCP Packer bucket name for the Ubuntu image."
+variable "alb_name" {
+  description = "The name of the ALB."
   type        = string
 }
 
-variable "hcp_channel" {
-  description = "The HCP Packer channel for the Ubuntu image."
+variable "alb_internal" {
+  description = "Whether the ALB is internal."
+  type        = bool
+  default     = false
+}
+
+variable "vpc_id" {
+  description = "The VPC ID where resources will be created."
   type        = string
 }
 
-variable "cidr_vpc" {
-  description = "The CIDR block for the VPC."
-  type        = string
-  default     = "10.0.0.0/16"
+variable "subnet_ids" {
+  description = "List of subnet IDs."
+  type        = list(string)
 }
 
-variable "cidr_subnet" {
-  description = "The CIDR block for the subnet."
-  type        = string
-  default     = "10.0.1.0/24"
+variable "subnet_cidrs" {
+  description = "List of subnet CIDR blocks."
+  type        = list(string)
+}
+
+variable "enable_deletion_protection" {
+  description = "Whether to enable deletion protection for the ALB."
+  type        = bool
+  default     = false
 }
 
 variable "tags" {
   description = "Tags to be applied to resources."
   type        = map(string)
   default     = {}
+}
+
+variable "security_groups" {
+  description = "A list of security group IDs to assign to the load balancer"
+  type        = list(string)
+}
+
+variable "subnets" {
+  description = "A list of subnet IDs to attach to the load balancer"
+  type        = list(string)
 }
