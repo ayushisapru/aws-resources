@@ -20,7 +20,7 @@ variable "security_group_id" {
   default     = "sg-0d56d6beb4c1bc48f"
 }
 
-variable "subnet_id" {
+variable "subnets" {
   description = "The ID of the subnet to attach to the load balancer"
   type        = string
   default     = "subnet-062078177a35b5fbb"
