@@ -1,24 +1,23 @@
-region = var.region
+provider "aws" {
+  region = var.region
 }
 
-resource "aws_vpc" "vpc" {
-  cidr_block = var.vpc_cidr
+module "alb" {
+  source  = "terraform-aws-modules/alb/aws"
+  version = "9.9.0"
+
+  name                     = var.alb_name
+  internal                 = var.alb_internal
+  security_groups          = [aws_security_group.sg.id]
+  subnets                  = aws_subnet.subnet.id
+  enable_deletion_protection = var.enable_deletion_protection
+  tags                     = var.tags
 }
 
-resource "aws_security_group" "sg" {
-  name_prefix = "alb_sg"
-  vpc_id      = var.vpc_id
-  vpc_id      = aws_vpc.vpc.id
-
-  ingress {
-    from_port   = 80
-@@ -22,8 +26,8 @@ resource "aws_security_group" "sg" {
+output "alb_arn" {
+  value = module.alb.alb_arn
 }
 
-resource "aws_subnet" "subnet" {
-  count = length(var.subnet_ids)
-  vpc_id     = var.vpc_id
-  count = length(var.subnet_cidrs)
-  vpc_id     = aws_vpc.vpc.id
-  cidr_block = element(var.subnet_cidrs, count.index)
+output "alb_dns_name" {
+  value = module.alb.alb_dns_name
 }
