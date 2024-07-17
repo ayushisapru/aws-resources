@@ -20,8 +20,8 @@ variable "security_groups" {
 }
 
 variable "subnets" {
+  description = "List of subnet IDs"
   type        = list(string)
-  default     = aws_subnet.subnet.id
 }
 
 variable "enable_deletion_protection" {
