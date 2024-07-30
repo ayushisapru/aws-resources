@@ -42,8 +42,9 @@ variable "tags" {
     Project     = "my-project"
   }
 }
-
+/*
 variable "vpc_id" {
   description = "The ID of the VPC"
   type        = string
 }
+*/
