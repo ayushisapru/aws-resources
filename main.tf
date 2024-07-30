@@ -47,7 +47,7 @@ output "alb_arn" {
 output "alb_dns_name" {
   value = module.alb.alb_dns_name
 }
-
+/*
 resource "aws_launch_template" "example" {
   name_prefix   = "example-lt"
   image_id      = "ami-12345678"  # Replace with your desired AMI ID
@@ -56,7 +56,7 @@ resource "aws_launch_template" "example" {
   lifecycle {
     create_before_destroy = true
   }
-
+*/
   network_interfaces {
     associate_public_ip_address = true
   }
@@ -74,8 +74,8 @@ module "autoscaling" {
   version = "7.7.0"
 
   name                  = "my-autoscaling-group"
-  launch_template       = {
-    id      = aws_launch_template.example.id
+  //launch_template       = {
+  //  id      = aws_launch_template.example.id
     version = "$Latest"
   }
   min_size              = 0
