@@ -2,12 +2,12 @@ provider "aws" {
   region = var.region
 }
 
-# Fetch the VPC information
+# retrieve vpc
 data "aws_vpc" "selected" {
   id = var.vpc_id
 }
 
-# Fetch all subnets in the specified VPC
+# retrieve subnets 
 data "aws_subnets" "selected" {
   filter {
     name   = "vpc-id"
@@ -15,6 +15,7 @@ data "aws_subnets" "selected" {
   }
 }
 
+# retrieve security group
 # Fetch the default security group for the VPC
 data "aws_security_group" "default" {
   filter {
@@ -47,28 +48,7 @@ output "alb_arn" {
 output "alb_dns_name" {
   value = module.alb.alb_dns_name
 }
-/*
-resource "aws_launch_template" "example" {
-  name_prefix   = "example-lt"
-  image_id      = "ami-12345678"  # Replace with your desired AMI ID
-  instance_type = "t2.micro"
 
-  lifecycle {
-    create_before_destroy = true
-  }
-
-  network_interfaces {
-    associate_public_ip_address = true
-  }
-
-  tag_specifications {
-    resource_type = "instance"
-    tags = {
-      Name = "example-instance"
-    }
-  }
-}
-*/
 module "autoscaling" {
   source  = "terraform-aws-modules/autoscaling/aws"
   version = "7.7.0"
@@ -79,4 +59,12 @@ module "autoscaling" {
   desired_capacity      = 1
   health_check_type     = "EC2"
   vpc_zone_identifier   = data.aws_subnets.selected.ids
+
+
+  launch_template = {
+    id      = aws_launch_template.example.id
+    version = "$Latest"
+  }
+
+  tags = var.tags 
 }
