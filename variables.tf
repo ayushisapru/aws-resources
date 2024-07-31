@@ -31,7 +31,7 @@ variable "tags" {
   }
 }
 
-vairbale "vpc_id" {
+variable "vpc_id" {
   description = "The ID of the VPC"
   type        = string
 }
