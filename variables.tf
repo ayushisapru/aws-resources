@@ -15,19 +15,7 @@ variable "alb_internal" {
   type        = bool
   default     = false
 }
-/*
-variable "security_groups" {
-  description = "A list of security group IDs to assign to the load balancer"
-  type        = list(string)
-  default     = [aws_security_group.sg.id]
-}
 
-variable "subnets" {
-  description = "A list of subnet IDs to attach to the load balancer"
-  type        = list(string)
-  default     = aws_subnet.subnet.id
-}
-*/
 variable "enable_deletion_protection" {
   description = "Whether deletion protection is enabled"
   type        = bool
@@ -42,9 +30,8 @@ variable "tags" {
     Project     = "my-project"
   }
 }
-/*
-variable "vpc_id" {
+
+vairbale "vpc_id" {
   description = "The ID of the VPC"
   type        = string
 }
-*/
